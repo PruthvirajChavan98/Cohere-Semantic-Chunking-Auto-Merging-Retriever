@@ -44,16 +44,6 @@ app = FastAPI()
 
 settings_manager = SettingsManager()
 
-# # load from saved folder
-# embed_model = OptimumEmbedding(folder_name='./bge_large_onnx')
-# """
-# An instance of OptimumEmbedding model for generating embeddings.
-# """
-# # create and save to folder
-# OptimumEmbedding.create_and_save_optimum_model(
-#     "BAAI/bge-large-en-v1.5", "./bge_large_onnx"
-# )
-
 embediing_model_folder_name = './bge_large_onnx'
 model_name = "BAAI/bge-large-en-v1.5"
 
