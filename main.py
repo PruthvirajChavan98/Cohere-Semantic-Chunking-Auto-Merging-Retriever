@@ -88,6 +88,8 @@ async def get_response(data: QueryData):
         chain = settings_manager.get_chain()
         cohere_rerank = settings_manager.get_cohere_rerank()
         nodes = retriever.retrieve(data.query)
+        sources = [node.metadata for node in nodes]
+        print(sources)
         post_processed_nodes = cohere_rerank.postprocess_nodes(nodes=nodes, query_bundle=QueryBundle(data.query))
         text = "".join(node.text for node in post_processed_nodes)
         response = chain.invoke({"text": text, "topic": data.query})
@@ -123,9 +125,8 @@ async def stream_response(data: QueryData):
         return StreamingResponse(generator(), media_type="text/plain")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
-@app.post("/query", response_class=PlainTextResponse)
 
+@app.post("/query", response_class=PlainTextResponse)
 async def query_index(data: QueryData):
     """
     Endpoint to query the index directly.
@@ -222,4 +223,3 @@ async def update_settings_and_load_or_build_index(
         return {"response": "Settings and index updated successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
